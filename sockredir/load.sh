@@ -10,7 +10,12 @@ set -e
 sudo mount -t bpf bpf /sys/fs/bpf/
 
 # Compile the bpf_sockops_v4 program
-clang -O2 -g -target bpf -I/usr/include/linux/ -I/root/linux/include/ -c bpf_sockops_v4.c -o bpf_sockops_v4.o
+clang -O2 -g -target bpf \
+   -I /usr/include/linux/ -I /root/linux/include/ \
+   -I /root/linux/include/generated/uapi \
+   -I /root/linux//tools/testing/selftests/bpf/ \
+   -include /root/linux/include/linux/kconfig.h \
+   -c bpf_sockops_v4.c -o bpf_sockops_v4.o
 
 # Load and attach the bpf_sockops_v4 program
 sudo bpftool prog load bpf_sockops_v4.o "/sys/fs/bpf/bpf_sockops"

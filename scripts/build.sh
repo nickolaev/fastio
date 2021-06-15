@@ -6,17 +6,15 @@ set -x
 # exit if any command fails
 set -e
 
-KTREE="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 KMAJOR=$(uname -r | cut -d"." -f1)
 KMINOR=$(uname -r | cut -d"." -f2)
 
-cd /root
-git clone --depth 1 --branch v${KMAJOR}.${KMINOR} ${KTREE}
+cd /root/linux
+git reset --hard v${KMAJOR}.${KMINOR}
+git clean -fdx
 
-cp linux/include/uapi/linux/bpf.h /root/sockredir
-pushd linux/tools/bpf/bpftools
+cp include/uapi/linux/bpf.h /root/sockredir
+pushd tools/bpf/bpftool
 make
 make install
 popd
-
-
