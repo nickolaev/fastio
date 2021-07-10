@@ -22,12 +22,7 @@ func main() {
 		fmt.Println("WARNING: Failed to adjust rlimit")
 	}
 
-	specs, err := newCounterSpecs()
-	if err != nil {
-		panic(err)
-	}
-
-	objs, err := specs.Load(nil)
+	objs, err := loadFastio()
 	if err != nil {
 		panic(err)
 	}
